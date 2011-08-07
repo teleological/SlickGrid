@@ -330,8 +330,7 @@ if (!jQuery.fn.drag) {
             $container = $(container);
 
             gridData = data;
-            gridDataGetLength = gridData.getLength || defaultGetLength;
-            gridDataGetItem = gridData.getItem || defaultGetItem;
+            setDataAccessors(gridData);
 
             maxSupportedCssHeight = getMaxSupportedCssHeight();
 
@@ -1121,10 +1120,16 @@ if (!jQuery.fn.drag) {
             removeAllRows();
             data = newData;
             gridData = data;
-            gridDataGetLength = gridData.getLength || defaultGetLength;
-            gridDataGetItem = gridData.getItem || defaultGetItem;
+            setDataAccessors(gridData);
             if (scrollToTop)
                 scrollTo(0);
+        }
+
+        function setDataAccessors(data) {
+            gridDataGetLength = data.getLength ?
+                function() { return data.getLength(); } : defaultGetLength;
+            gridDataGetItem = data.getItem ?
+                function(i) { return data.getItem(i); } : defaultGetItem;
         }
 
         function getData() {
